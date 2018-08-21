@@ -14,5 +14,63 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+
+    <properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jackson.version>2.4.4</jackson.version>
+		<sonar.projectName>my-app</sonar.projectName>
+		<sonar.projectKey>org.sonarqube:my-app</sonar.projectKey>
+		<sonar.jacoco.reportPaths>${project.buildDir}/jacoco/test.exec</sonar.jacoco.reportPaths>
+		<sonar.java.binaries>target/classes</sonar.java.binaries>
+		</properties>
   </dependencies>
+</project>
+<dependency>
+    <groupId>org.sonarsource.scanner.maven</groupId>
+    <artifactId>sonar-maven-plugin</artifactId>
+    <version>3.3.0.603</version>
+</dependency>
+<profiles>
+    <profile>
+      <id>sonar-coverage</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.jacoco</groupId>
+              <artifactId>jacoco-maven-plugin</artifactId>
+              <version>0.8.0</version>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <configuration>
+              <append>true</append>
+            </configuration>
+            <executions>
+              <execution>
+                <id>agent-for-ut</id>
+                <goals>
+                  <goal>prepare-agent</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>jacoco-site</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>report</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
